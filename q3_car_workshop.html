@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Workshop</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h3 {
+            color: #1a56ff;
+            margin: 30px 0 40px;
+            font-size: 22px;
+        }
+        .car {
+            position: relative;
+            width: 280px;
+            height: 190px;
+            margin: 0 auto;
+        }
+        #glass {
+            position: absolute;
+            left: 75px;
+            top: 0;
+            width: 130px;
+            height: 55px;
+            background: #3cb35a;
+            clip-path: polygon(15% 0, 85% 0, 100% 100%, 0 100%);
+        }
+        #body {
+            position: absolute;
+            left: 10px;
+            top: 55px;
+            width: 260px;
+            height: 65px;
+            background: #7fe024;
+            border-radius: 12px 18px 8px 8px;
+        }
+        .tyre {
+            position: absolute;
+            top: 125px;
+            width: 50px;
+            height: 50px;
+            background: #14194d;
+            border: 5px solid #777;
+            border-radius: 50%;
+            box-sizing: border-box;
+        }
+        #t1 { left: 40px; }
+        #t2 { left: 190px; }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 25px auto;
+            padding: 0 15px;
+        }
+        button {
+            padding: 10px 14px;
+            background: white;
+            color: #1a56ff;
+            border: 1px solid #1a56ff;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #1a56ff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h3>Car Workshop</h3>
+
+    <div class="car">
+        <div id="glass"></div>
+        <div id="body"></div>
+        <div class="tyre" id="t1"></div>
+        <div class="tyre" id="t2"></div>
+    </div>
+
+    <div class="controls">
+        <button id="glassBtn">Change Glass Color</button>
+        <button id="bodyBtn">Change Body Color</button>
+        <button id="incBtn">Tyre Size Increase</button>
+        <button id="decBtn">Tyre Size Decrease</button>
+        <button id="resetBtn">Reset</button>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            let glassColors = [
+                "#3cb35a", "#1e90ff", "#333333", "#ffa500", "#9370db"
+            ];
+
+            let bodyColors = [
+                "#7fe024", "#ff0000", "#0000ff", "#ffd700", "#ff69b4"
+            ];
+
+            let g = 0;
+            let b = 0;
+            let size = 50;
+
+            $('#glassBtn').click(function () {
+                g = (g + 1) % glassColors.length;
+                $('#glass').css('background', glassColors[g]);
+            });
+
+            $('#bodyBtn').click(function () {
+                b = (b + 1) % bodyColors.length;
+                $('#body').css('background', bodyColors[b]);
+            });
+
+            $('#incBtn').click(function () {
+                if (size < 80) {
+                    size += 10;
+                    $('.tyre').css({
+                        width: size + 'px',
+                        height: size + 'px'
+                    });
+                } else {
+                    alert("Maximum tyre size reached!");
+                }
+            });
+
+            $('#decBtn').click(function () {
+                if (size > 30) {
+                    size -= 10;
+                    $('.tyre').css({
+                        width: size + 'px',
+                        height: size + 'px'
+                    });
+                } else {
+                    alert("Minimum tyre size reached!");
+                }
+            });
+
+            $('#resetBtn').click(function () {
+                g = 0;
+                b = 0;
+                size = 50;
+
+                $('#glass').css('background', glassColors[0]);
+                $('#body').css('background', bodyColors[0]);
+
+                $('.tyre').css({
+                    width: '50px',
+                    height: '50px'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

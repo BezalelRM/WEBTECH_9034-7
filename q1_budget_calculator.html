@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Calculator App</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Times New Roman", serif;
+            text-align: center;
+        }
+        header {
+            background: black;
+            color: white;
+            padding: 10px;
+        }
+        header h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+        h4 {
+            margin: 25px 0 15px;
+        }
+        input[type=number] {
+            width: 75px;
+            padding: 5px;
+        }
+        #total {
+            width: 100px;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 15px;
+        }
+        #btn {
+            margin-top: 25px;
+            padding: 12px 20px;
+            background: navy;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #output {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .card {
+            width: 120px;
+            padding: 15px 8px;
+            color: white;
+            font-size: 14px;
+        }
+        #rentBox { background: blue; }
+        #accBox { background: green; }
+        #emerBox { background: blue; }
+        #saveBox { background: deeppink; }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>Budget Calculator App</h2>
+    </header>
+
+    <h4>Enter Amount that you want to Manage</h4>
+    <input type="number" id="total" value="15000" min="0">
+
+    <h4>How would you like to divide your money?</h4>
+
+    <div class="row">
+        <label>Room Rent (%): <input type="number" id="rentP" value="50" min="0"></label>
+        <label>Accessories (%): <input type="number" id="accP" value="20" min="0"></label>
+        <label>Emergency (%): <input type="number" id="emerP" value="20" min="0"></label>
+        <label>Saving (%): <input type="number" id="saveP" value="10" min="0"></label>
+    </div>
+
+    <button id="btn">Evaluate My Money</button>
+    <div id="output"></div>
+
+    <script>
+        $(document).ready(function () {
+            $('#btn').click(function () {
+                let total = Number($('#total').val());
+                let rentP = Number($('#rentP').val());
+                let accP = Number($('#accP').val());
+                let emerP = Number($('#emerP').val());
+                let saveP = Number($('#saveP').val());
+
+                let values = [total, rentP, accP, emerP, saveP];
+
+                if (values.some(v => !Number.isFinite(v) || v < 0) ||
+                    $('#total').val() === '' ||
+                    $('#rentP').val() === '' ||
+                    $('#accP').val() === '' ||
+                    $('#emerP').val() === '' ||
+                    $('#saveP').val() === '') {
+                    alert("Please enter valid non-negative values!");
+                    $('#output').empty();
+                    return;
+                }
+
+                let sum = rentP + accP + emerP + saveP;
+
+                if (Math.abs(sum - 100) > 0.000001) {
+                    alert("Amount cannot be divided! Total percentage is " +
+                          sum + "%, it must be 100%.");
+                    $('#output').empty();
+                    return;
+                }
+
+                let rent = total * rentP / 100;
+                let acc = total * accP / 100;
+                let emer = total * emerP / 100;
+                let save = total * saveP / 100;
+
+                $('#output').html(
+                    '<div class="card" id="rentBox">Room Rent<br>Rs.' + rent.toFixed(2) + '</div>' +
+                    '<div class="card" id="accBox">Accessories<br>Rs.' + acc.toFixed(2) + '</div>' +
+                    '<div class="card" id="emerBox">Emergency<br>Rs.' + emer.toFixed(2) + '</div>' +
+                    '<div class="card" id="saveBox">Saving<br>Rs.' + save.toFixed(2) + '</div>'
+                );
+            });
+        });
+    </script>
+</body>
+</html>
